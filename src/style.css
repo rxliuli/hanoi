@@ -1,0 +1,65 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 800px;
+  margin: auto;
+}
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+main > div {
+  text-align: center;
+}
+
+.list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+  height: 150px;
+}
+
+.list li {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #ffffff;
+}
+.list.a {
+  background-color: rgba(255, 86, 87, 0.1);
+}
+.list.a li {
+  background-color: #ff5657;
+}
+.list.b {
+  background-color: rgba(55, 108, 138, 0.1);
+}
+.list.b li {
+  background-color: #376c8a;
+}
+.list.c {
+  background-color: rgba(242, 217, 187, 0.1);
+}
+.list.c li {
+  background-color: #f2d9bb;
+}
+.list.selected {
+  background-color: #638fa9;
+}
