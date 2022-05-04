@@ -5,9 +5,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "deploy": "liuli-cli deploy"
+  },
+  "deploy": {
+    "type": "gh-pages",
+    "dist": "dist"
   },
   "devDependencies": {
+    "@liuli-util/cli": "^3.21.0",
     "@types/jest": "^27.5.0",
     "jest": "^27.5.1",
     "ts-jest": "^27.1.4",
