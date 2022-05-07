@@ -97,9 +97,9 @@ function render() {
           break
         }
         click(from)
-        await wait(500)
+        await wait(100)
         click(to)
-        await wait(500)
+        await wait(100)
       }
     }
 
@@ -112,6 +112,7 @@ function render() {
     )
 
     auto = false
+    render()
   })
 
   document.querySelectorAll('.list').forEach((item) =>
