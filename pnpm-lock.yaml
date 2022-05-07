@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@liuli-util/async': ^3.3.0
   '@liuli-util/cli': ^3.21.0
   '@types/jest': ^27.5.0
   html-template-tag: ^4.0.1
@@ -10,6 +11,7 @@ specifiers:
   vite: ^2.9.7
 
 dependencies:
+  '@liuli-util/async': 3.3.0
   html-template-tag: 4.0.1
 
 devDependencies:
@@ -631,6 +633,10 @@ packages:
   /@kwsites/promise-deferred/1.1.1:
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
     dev: true
+
+  /@liuli-util/async/3.3.0:
+    resolution: {integrity: sha512-rLnup3kjZmLiOy7Vk1Nn5is6t+AWwNH5HufPlGMJ8zGNSptsOEoTC98hDagd2Ef3Jxmrh5Jv6XNAkk4asgLyjQ==}
+    dev: false
 
   /@liuli-util/cli/3.21.0_typescript@4.6.4:
     resolution: {integrity: sha512-gl0HZIdnBVA09dMMJF5HYWCuLdFoGKIYMoh4Nrotbl3FFtAbHGIQ1X7SoN4PHOFP+uPt5yW1IgRNZu5PH/7uMQ==}

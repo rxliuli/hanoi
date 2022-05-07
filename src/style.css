@@ -2,15 +2,21 @@ html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 body {
-  width: 800px;
+  max-width: 800px;
+  width: 100%;
   margin: auto;
 }
 * {
   box-sizing: border-box;
 }
-
+#app {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+}
 h1 {
   text-align: center;
 }
@@ -33,7 +39,8 @@ main > div {
   align-items: center;
   justify-content: end;
   gap: 8px;
-  height: 150px;
+  /* height: calc(30px * 6 + 8px * 5 + 8px * 2); */
+  padding: 8px;
 }
 
 .list li {
@@ -62,4 +69,9 @@ main > div {
 }
 .list.selected {
   background-color: #638fa9;
+}
+
+footer {
+  height: 36px;
+  text-align: center;
 }

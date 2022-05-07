@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@liuli-util/async": "^3.3.0",
     "html-template-tag": "^4.0.1"
   }
 }
