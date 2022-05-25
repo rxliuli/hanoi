@@ -1,7 +1,7 @@
 import './style.css'
 import html from 'html-template-tag'
 import { HanoiGame, HanoiPos, HanoiState } from './service/HanoiGame'
-import { hanoi, hanoiAny } from './service/hanoiAny'
+import { hanoi, hanoiAnyByDepth } from './service/hanoiAny'
 import { wait } from '@liuli-util/async'
 
 let count = 6
@@ -103,7 +103,7 @@ function render() {
       }
     }
 
-    await exec(hanoiAny(game.state))
+    await exec(hanoiAnyByDepth(game.state, 'b'))
     const from = findPos(game.state, 1)
     await exec(
       from === 'b'

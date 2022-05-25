@@ -73,5 +73,19 @@ main > div {
 
 footer {
   height: 36px;
+  font-size: 18px;
   text-align: center;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  height: 36px;
+  font-size: 18px;
+  background-color: #00e6f67c;
+  color: #ffffff;
+  transition: all 0.2s;
+}
+button:hover {
+  background-color: #00e6f6;
 }

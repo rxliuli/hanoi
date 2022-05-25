@@ -1,77 +1,83 @@
-import { HanoiPos } from './HanoiGame'
+import { HanoiGame, HanoiPos } from './HanoiGame'
 
 /**
  * 处理任意状态下的汉诺塔
- * @param state
- * @returns
+ * 优先考虑如何将最大的圆盘移动到合适的位置，必须要考虑无法移动的情况（在无法移动的情况下应该尝试合并两外两个柱子）
  */
-export function hanoiAny(
+export function hanoiAnyByDepth(
   state: Record<HanoiPos, number[]>,
+  to: HanoiPos,
 ): [HanoiPos, HanoiPos][] {
-  function findPos(state: Record<HanoiPos, number[]>, value: number): HanoiPos {
-    const arr: HanoiPos[] = ['a', 'b', 'c']
-    const res = arr.map((i) => state[i][0])
-    return arr[res.indexOf(value)]
-  }
-  function findContinuousCount(arr: number[]): number {
-    function f(i: number, last: number): number {
-      return arr[i] !== last + 1 ? i : f(i + 1, arr[i])
-    }
-    return f(1, arr[0])
-  }
-  function calcSteps(
+  function findPosByNumber(
+    state: Record<HanoiPos, number[]>,
     n: number,
+  ): HanoiPos {
+    return Object.entries(state).find(([_k, v]) =>
+      v.includes(n),
+    )?.[0] as HanoiPos
+  }
+  function isMove(
+    state: Record<HanoiPos, number[]>,
     from: HanoiPos,
     to: HanoiPos,
-    stage: HanoiPos,
-  ): [HanoiPos, HanoiPos][] {
-    if (n === 1) {
-      return [[from, to]]
-    }
-    return calcSteps(n - 1, from, stage, to)
-      .concat(calcSteps(1, from, to, stage))
-      .concat(calcSteps(n - 1, stage, to, from))
+    n: number,
+  ) {
+    const game = new HanoiGame(state)
+    return game.get(from) === n && game.check(from, to)
+  }
+  function move(
+    state: Record<HanoiPos, number[]>,
+    steps: [HanoiPos, HanoiPos][],
+  ): Record<HanoiPos, number[]> {
+    const game = new HanoiGame(JSON.parse(JSON.stringify(state)))
+    steps.forEach((step) => game.move(...step))
+    return game.state
   }
   function findStage(from: HanoiPos, to: HanoiPos): HanoiPos {
     const arr: HanoiPos[] = ['a', 'b', 'c']
     return arr.find((i) => i !== from && i !== to)!
   }
-  function move(
+  function iter(
     state: Record<HanoiPos, number[]>,
-    n: number,
     from: HanoiPos,
     to: HanoiPos,
     stage: HanoiPos,
-  ): Record<HanoiPos, number[]> {
-    return {
-      [to]: state[from].slice(0, n).concat(state[to]),
-      [from]: state[from].slice(n),
-      [stage]: state[stage],
-    } as Record<HanoiPos, number[]>
-  }
-  function count(state: Record<HanoiPos, number[]>): number {
-    const arr: HanoiPos[] = ['a', 'b', 'c']
-    return arr.map((i) => state[i].length).reduce((a, b) => a + b)
-  }
-  function iter(state: Record<HanoiPos, number[]>): [HanoiPos, HanoiPos][] {
-    // 寻找小的连续圆盘
-    const from = findPos(state, 1)
-    const n = findContinuousCount(state[from])
-    // 判断是否到最终状态了
-    // 返回所有步骤
-    if (n === count(state)) {
+    n: number,
+  ): [HanoiPos, HanoiPos][] {
+    if (from === to) {
+      const nextFrom = findPosByNumber(state, n - 1)
+      return iter(state, nextFrom, to, findStage(nextFrom, to), n - 1)
+    }
+    if (n === 0) {
       return []
     }
-    // 否则移动所有连续的圆盘到另一个柱子
-    // 找到移动的目标
-    const to = findPos(state, state[from][n - 1] + 1)
-    const stage = findStage(from, to)
-    // 移动
-    return calcSteps(n, from, to, stage).concat(
-      iter(move(state, n, from, to, stage)),
+    // 移动 from => to 的一个指定值
+    // 如果可以直接移动，则直接移动
+    if (isMove(state, from, to, n)) {
+      return [[from, to]]
+    }
+    // 否则找到上面影响移动的最大圆盘到临时柱，递归调用该方法
+    const values = [...state[from], ...state[to]].sort((a, b) => a - b)
+    const nextN = values[values.indexOf(n) - 1]
+    const nextForm = findPosByNumber(state, nextN)
+    // 应用上面的移动步骤，然后递归调用该方法
+    const before = iter(
+      state,
+      nextForm,
+      stage,
+      findStage(nextForm, stage),
+      nextN,
     )
+    let nextState = move(state, before)
+    const current = iter(nextState, from, to, stage, n)
+    nextState = move(nextState, current)
+    const next = findPosByNumber(nextState, n - 1)
+    const after = iter(nextState, next, to, findStage(next, to), n - 1)
+    return [...before, ...current, ...after]
   }
-  return iter(state)
+  const initN = Object.values(state).flat().length
+  const initForm = findPosByNumber(state, initN)
+  return iter(state, initForm, to, findStage(initForm, to), initN)
 }
 
 export function hanoi(
